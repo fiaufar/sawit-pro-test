@@ -39,7 +39,6 @@ func main() {
 	accountGroup.GET("/profile", server.Profile)
 	accountGroup.PUT("/profile", server.UpdateProfile)
 
-	// generated.RegisterHandlers(e, server)
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
@@ -49,11 +48,6 @@ func newServer() *handler.Server {
 	dbConnection := infrastructure.NewDbConnection(infrastructure.NewDbConnectionOptions{
 		Dsn: dbDsn,
 	})
-	util.Log.Info(dbConnection)
-	// var repo repository.RepositoryInterface = repository.NewRepository(repository.NewRepositoryOptions{
-	// 	Dsn: dbDsn,
-	// })
-
 	userRepo := repository.NewUserRepository(repository.NewUserRepositoryOptions{
 		DbConn: dbConnection,
 	})
