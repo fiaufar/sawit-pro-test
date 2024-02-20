@@ -1,0 +1,217 @@
+# This is the OpenAPI specification for your service. It is used to generate the client code.
+# To generate the server code, use the Gradle task `openApiGenerate`. The 
+# generated code will be placed in `build/generate-resources/main`.
+#
+# We will evaluate you based on how well you design your API.
+# 1. How well it follows REST principles.
+# 2. How easy it is to understand and use.
+#
+# References
+# 1. https://swagger.io/specification/
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: User Service
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8080
+paths:
+  /auth/login:
+    post:
+      description: Login
+      operationId: auth-login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Succes login
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/SuccessReponse"
+      summary: Register
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      description: Register
+      operationId: auth-register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Success register
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/SuccessReponse"
+      summary: Register
+      tags:
+      - Auth
+  /account/profile:
+    get:
+      description: Get Profile
+      operationId: account-get-profile
+      security:
+      - BearerAuth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Success register
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/SuccessReponse"
+        '400':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: Profile
+      tags:
+      - Account
+    put:
+      description: Update Profile
+      operationId: account-update-profile
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Success register
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/SuccessReponse"
+        '400':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: Profile
+      tags:
+      - Account
+  /hello:
+    get:
+      summary: This is just a test endpoint to get you started. Please delete this endpoint.
+      operationId: hello
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Test return
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/SuccessReponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    LoginRequest:
+      properties:
+        password:
+          type: string
+        phone_number:
+          type: string
+      required:
+      - password
+      - phone_number
+      type: object
+    RegisterRequest:
+      properties:
+        fullname:
+          maxLength: 60
+          minLength: 3
+          type: string
+        password:
+          type: string
+        phone_number:
+          type: string
+      required:
+      - fullname
+      - password
+      - phone_number
+      type: object
+    UpdateProfileRequest:
+      properties:
+        fullname:
+          maxLength: 60
+          minLength: 3
+          type: string
+        phone_number:
+          type: string
+      type: object
+    SuccessReponse:
+      type: object
+      required:
+        - code
+        - status
+        - message
+        - error
+        - data
+      properties:
+        code:
+          type: integer
+        status:
+          type: string
+        message:
+          type: string
+        errors:
+          type: object
+        data:
+          type: object
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - status
+        - message
+        - error
+        - data
+      properties:
+        code:
+          type: integer
+        status:
+          type: string
+        message:
+          type: string
+        errors:
+          type: object
+        data:
+          type: object
